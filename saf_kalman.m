@@ -1,4 +1,4 @@
-function out = saf_kalman(mic, spk, frame_size)
+function out = saf_kalman(mic, spk, frame_size, use_nlp)
 
     out_len = min(length(mic),length(spk));
     out = zeros(out_len,1);
@@ -8,7 +8,7 @@ function out = saf_kalman(mic, spk, frame_size)
     for i = 1 : out_num
         mic_frame = mic((i - 1) * frame_size + 1 : i * frame_size);
         spk_frame = spk((i - 1) * frame_size + 1 : i * frame_size);
-        [st, out_frame] = saf_process(st, mic_frame, spk_frame);
+        [st, out_frame] = saf_process(st, mic_frame, spk_frame, use_nlp);
         out(1+(i-1)*frame_size:i*frame_size) = out_frame;
     end
     
@@ -72,7 +72,7 @@ function out = saf_kalman(mic, spk, frame_size)
         end
     end
 
-    function [st, out] = saf_process(st, mic_frame, spk_frame)
+    function [st, out] = saf_process(st, mic_frame, spk_frame, use_nlp)
         N = st.frame_len;
         K = st.K;
         [mic_in, st.notch_mem] = filter_dc_notch16(mic_frame, st.notch_radius, N, st.notch_mem);
@@ -108,7 +108,7 @@ function out = saf_kalman(mic, spk, frame_size)
         end
         
         % compose subband
-        if(1)
+        if(use_nlp)
             % nlp
             [st,nlpout] = nlpProcess(st,subband_adf_err, subband_adf_out);
             ifft_in = [nlpout', fliplr(conj(nlpout(2:end-1)'))];
