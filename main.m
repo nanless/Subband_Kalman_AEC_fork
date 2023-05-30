@@ -38,13 +38,22 @@ elseif mode==2
     out = saf_sr_kalman(echo, far, frame_size, 1);
     audiowrite(out_file, out'/32678, fs1);
 elseif mode==3
-    out_file = [dir, '/if_kalman.wav'];
+    out_file = [dir, '/if-kalman.wav'];
     frame_size = 128;
     out = saf_if(echo, far, frame_size, 0);
     audiowrite(out_file, out'/32678, fs1);
-    out_file = [dir, '/if_kalman_nlp.wav'];
+    out_file = [dir, '/if-kalman_nlp.wav'];
     frame_size = 128;
     out = saf_if(echo, far, frame_size, 1);
+    audiowrite(out_file, out'/32678, fs1);
+elseif mode==4
+    out_file = [dir, '/sr-if-kalman.wav'];
+    frame_size = 128;
+    out = saf_sr_if(echo, far, frame_size, 0);
+    audiowrite(out_file, out'/32678, fs1);
+    out_file = [dir, '/sr-if-kalman_nlp.wav'];
+    frame_size = 128;
+    out = saf_sr_if(echo, far, frame_size, 1);
     audiowrite(out_file, out'/32678, fs1);
 end
 
