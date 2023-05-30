@@ -4,12 +4,12 @@ clc;clear all;
 % dir = './test_audio/aec_respeaker_6mic//zhoujielun';
 % dir = './test_audio/AEC_Challenge/double_real/2';
 
-dir = './test_audio/phone_record/single_talk';
-echo_file = [dir, '/2_mic.wav'];
-far_file = [dir , '/2_farend.wav'];
+dir = './test_audio/phone_record/double_talk';
+echo_file = [dir, '/1_mic.wav'];
+far_file = [dir , '/1_farend.wav'];
 
-[echo, fs1] = audioread(echo_file,'native');
-[far, fs2] = audioread(far_file, 'native');
+[echo, fs1] = audioread(echo_file);
+[far, fs2] = audioread(far_file);
 echo = double(echo);
 far = double(far);
 if ~(fs1==fs2)
@@ -59,7 +59,7 @@ end
 out_file = [dir, '/kalman_stft.wav'];
 frame_size = 256;
 out = saf_kalman_stft(echo, far, frame_size, 0);
-audiowrite(out_file, out'/32678, fs1);
+audiowrite(out_file, out, fs1);
 % out_file = [dir, '/kalman_stft_nlp.wav'];
 % frame_size = 256;
 % out = saf_kalman_stft(echo, far, frame_size, 1);
